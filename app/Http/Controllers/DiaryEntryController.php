@@ -7,20 +7,39 @@ use App\Models\Emotion; // ใช้ดึงรายการอารมณ�
 use App\Models\Tag;     // ใช้ดึงรายการแท็ก
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
 
 class DiaryEntryController extends Controller
 {
     public function index()
     {
-        // ดึงไดอารี่ของผู้ใช้ พร้อม emotions และ tags เพื่อลด N+1
-        $diaryEntries = Auth::user()
-            ->diaryEntries()
-            ->with(['emotions', 'tags'])
-            ->latest('date')
+        // Get the paginated diary entries with their associated emotions
+        $diaryEntries = Auth::user()->diaryEntries()
+            ->with('emotions', 'tags')
+            ->orderBy('date', 'desc')
+            ->paginate(5);
+
+        // Get the logged-in user ID. Stores the current user's ID in $userId for raw query builder usage.
+        $userId = Auth::id();
+
+        // Count how many diaries are related to each emotion
+        $emotionCounts = DB::table('diary_entry_emotions as dee')
+            ->join('diary_entries as de', 'dee.diary_entry_id', '=', 'de.id')
+            ->select('dee.emotion_id', DB::raw('count(dee.diary_entry_id) as diary_count'))
+            ->where('de.user_id', $userId)
+            ->whereIn('dee.emotion_id', [1, 2, 3, 4, 5])
+            ->groupBy('dee.emotion_id')
             ->get();
 
-        return view('diary.index', compact('diaryEntries'));
+        // Convert the data into a PHP array
+        $summary = [];
+        foreach ($emotionCounts as $count) {
+            $summary[$count->emotion_id] = $count->diary_count;
+        }
+
+        // Return the view with both diary entries and summary data
+        return view('diary.index', compact('diaryEntries', 'summary'));
     }
 
     /**

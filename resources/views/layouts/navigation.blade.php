@@ -30,6 +30,13 @@
                         {{ __('Reminders') }}
                     </x-nav-link>
                 </div>
+
+                <!-- ✅ Conflicting Emotions (Desktop) -->
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('query-builder.conflicting-emotions')" :active="request()->routeIs('query-builder.conflicting-emotions')">
+                        {{ __('Get Conflict') }}
+                    </x-nav-link>
+                </div>
             </div>
 
             <!-- Settings Dropdown -->
@@ -92,6 +99,11 @@
             <!-- ✅ Reminders (Responsive) -->
             <x-responsive-nav-link :href="route('reminders.index')" :active="request()->routeIs('reminders.*')">
                 {{ __('Reminders') }}
+            </x-responsive-nav-link>
+
+            <!-- ✅ Conflicting Emotions (Responsive) -->
+            <x-responsive-nav-link :href="route('query-builder.conflicting-emotions')" :active="request()->routeIs('query-builder.conflicting-emotions')">
+                {{ __('Get Conflict') }}
             </x-responsive-nav-link>
         </div>
 

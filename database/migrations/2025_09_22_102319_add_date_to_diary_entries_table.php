@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
 {
-    Schema::table('diary_entries', function (Blueprint $table) {
-        // เพิ่มคอลัมน์ date ถัดจาก user_id
-        $table->date('date')->after('user_id')->nullable(); // ทำเป็น nullable ไว้ก่อนเพื่อไม่ชนข้อมูลเก่า
-    });
+    // This migration was created by mistake as 'date' column already exists
+    // in the original diary_entries table creation migration.
+    // Keeping this empty to avoid duplicate column errors.
 }
 
     /**
@@ -22,8 +21,6 @@ return new class extends Migration
      */
     public function down(): void
 {
-    Schema::table('diary_entries', function (Blueprint $table) {
-        $table->dropColumn('date');
-    });
+    // No changes needed as this migration doesn't actually add anything
 }
 };

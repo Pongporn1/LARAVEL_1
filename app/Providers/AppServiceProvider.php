@@ -2,30 +2,23 @@
 
 namespace App\Providers;
 
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use App\Models\SocialMediaLink;
-use App\Policies\SocialMediaLinkPolicy;
+use Illuminate\Support\ServiceProvider;
 
-class AuthServiceProvider extends ServiceProvider
+class AppServiceProvider extends ServiceProvider
 {
     /**
-     * The policy mappings for the application.
-     *
-     * @var array<class-string, class-string>
+     * Register any application services.
      */
-    protected $policies = [
-        SocialMediaLink::class => SocialMediaLinkPolicy::class,
-    ];
+    public function register(): void
+    {
+        //
+    }
 
     /**
-     * Register any authentication / authorization services.
+     * Bootstrap any application services.
      */
     public function boot(): void
     {
-        // โหลด policy mappings ที่กำหนดไว้ด้านบน
-        $this->registerPolicies();
-
-        // ถ้าต้องการ Gate อื่น ๆ สามารถเพิ่มได้ที่นี่ เช่น
-        // Gate::define('is-admin', fn($user) => $user->is_admin);
+        //
     }
 }
